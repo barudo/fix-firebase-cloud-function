@@ -76,6 +76,16 @@ recipient  Text, optional
 
 Do not manually set the `Content-Type` header. Insomnia will set the multipart boundary automatically.
 
+## Online Endpoint
+
+The deployed online version is available at:
+
+```text
+https://sendemailfunction-yb46log5ja-uc.a.run.app/api/send-email
+```
+
+Send a `POST` request with a `multipart/form-data` body using the same fields listed above.
+
 ## Deployment
 
 Set the production Firebase secrets:
