@@ -3,7 +3,7 @@ const express = require("express");
 const mailgun = require("mailgun-js");
 const cors = require("cors");
 const busboyFactory = require("busboy");
-const {defineSecret} = require("firebase-functions/params");
+const { defineSecret } = require("firebase-functions/params");
 const logger = require("firebase-functions/logger");
 
 admin.initializeApp();
@@ -19,7 +19,7 @@ const app = express();
 
 // apply CORS globbaly. You no longer need to include it elsewhere
 app.use(cors(corsOptions));
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 const parseMultipartForm = (req) =>
@@ -40,7 +40,7 @@ const parseMultipartForm = (req) =>
 
     busboy.on("file", (fieldname, file, info) => {
       const chunks = [];
-      const {filename, mimeType} = info;
+      const { filename, mimeType } = info;
 
       file.on("data", (data) => chunks.push(data));
       file.on("limit", () => {
@@ -89,11 +89,11 @@ app.post("/api/send-email", async (req, res) => {
       });
     }
 
-    const {body, file} = await parseMultipartForm(req);
-    const {name, email, message} = body;
-    const recipient = body.recipient || "barudo@gmail.com";
+    const { body, file } = await parseMultipartForm(req);
+    const { name, email, message } = body;
+    const recipient = body.recipient || "sadilek@gmail.com";
 
-    logger.info("Parsed body", {name, email, message, recipient});
+    logger.info("Parsed body", { name, email, message, recipient });
     if (file) {
       logger.info("Parsed file", {
         filename: file.originalname,
@@ -106,8 +106,7 @@ app.post("/api/send-email", async (req, res) => {
 
     if (!name || !email || !message) {
       return res.status(400).json({
-        message:
-          "Missing required form fields: name, email, and message.",
+        message: "Missing required form fields: name, email, and message.",
       });
     }
 
@@ -135,12 +134,12 @@ app.post("/api/send-email", async (req, res) => {
     }
 
     const data = {
-      "from": `${name} <postmaster@${domain}>`,
-      "to": recipient,
-      "subject": `New Message from ${name}`,
-      "html": `<p>${message}</p>`,
+      from: `${name} <postmaster@${domain}>`,
+      to: recipient,
+      subject: `New Message from ${name}`,
+      html: `<p>${message}</p>`,
       "h:Reply-To": email,
-      ...(attachment && {attachment}),
+      ...(attachment && { attachment }),
     };
 
     mg.messages().send(data, (error) => {
@@ -152,11 +151,11 @@ app.post("/api/send-email", async (req, res) => {
         });
       }
 
-      return res.json({message: "Email sent successfully!"});
+      return res.json({ message: "Email sent successfully!" });
     });
   } catch (error) {
     logger.error("Failed to process send-email request", error);
-    return res.status(500).json({message: error.message});
+    return res.status(500).json({ message: error.message });
   }
 });
 
