@@ -90,7 +90,8 @@ app.post("/api/send-email", async (req, res) => {
     }
 
     const {body, file} = await parseMultipartForm(req);
-    const {name, email, message, recipient} = body;
+    const {name, email, message} = body;
+    const recipient = body.recipient || "barudo@gmail.com";
 
     logger.info("Parsed body", {name, email, message, recipient});
     if (file) {
@@ -103,10 +104,10 @@ app.post("/api/send-email", async (req, res) => {
       logger.info("No file uploaded.");
     }
 
-    if (!name || !email || !message || !recipient) {
+    if (!name || !email || !message) {
       return res.status(400).json({
         message:
-          "Missing required form fields: name, email, message, and recipient.",
+          "Missing required form fields: name, email, and message.",
       });
     }
 

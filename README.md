@@ -31,7 +31,7 @@ The `/api/send-email` route was updated to work correctly in Firebase Cloud Func
 
 Firebase Cloud Functions exposes the original request payload through `req.rawBody`. Multer expects to read from a normal live request stream, so it can fail to populate `req.body` and `req.file` after the app is deployed as a Firebase HTTP function.
 
-The fix replaces Multer with `busboy` for multipart parsing. The route now parses `multipart/form-data` from `req.rawBody`, extracts the `name`, `email`, `message`, and `recipient` fields, reads the uploaded file into a buffer, and attaches that file to the Mailgun email.
+The fix replaces Multer with `busboy` for multipart parsing. The route now parses `multipart/form-data` from `req.rawBody`, extracts the `name`, `email`, and `message` fields, reads the uploaded file into a buffer, and attaches that file to the Mailgun email. A `recipient` field is also supported, but it is optional and defaults to `barudo@gmail.com`.
 
 The route also now:
 
@@ -70,8 +70,8 @@ Use a `Multipart Form` body with these fields:
 name       Text
 email      Text
 message    Text
-recipient  Text
 file       File
+recipient  Text, optional
 ```
 
 Do not manually set the `Content-Type` header. Insomnia will set the multipart boundary automatically.
