@@ -58,13 +58,13 @@ Start the emulator from the project root:
 firebase emulators:start --only functions
 ```
 
-Test with Insomnia using:
+Test with Postman or Insomnia using:
 
 ```text
 POST http://127.0.0.1:5001/fix-firebase-cloud-function/us-central1/sendEmailFunction/api/send-email
 ```
 
-Use a `Multipart Form` body with these fields:
+Use a `multipart/form-data` body with these fields:
 
 ```text
 name       Text
@@ -74,7 +74,9 @@ file       File
 recipient  Text, optional
 ```
 
-Do not manually set the `Content-Type` header. Insomnia will set the multipart boundary automatically.
+In Insomnia, select `Multipart Form`. In Postman, select `Body`, then `form-data`. Mark the `file` field as a file upload field.
+
+Do not manually set the `Content-Type` header. Postman and Insomnia will set the multipart boundary automatically.
 
 ## Online Endpoint
 
@@ -84,7 +86,7 @@ The deployed online version is available at:
 https://sendemailfunction-yb46log5ja-uc.a.run.app/api/send-email
 ```
 
-Send a `POST` request with a `multipart/form-data` body using the same fields listed above.
+Send a `POST` request from Postman or Insomnia with a `multipart/form-data` body using the same fields listed above.
 
 ## Deployment
 
